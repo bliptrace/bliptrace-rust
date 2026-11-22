@@ -2,8 +2,8 @@ use g8scope::{capture, Config};
 
 fn main() {
     let cfg = Config {
-        key: std::env::var("G8SCOPE_KEY").unwrap_or_default(),
-        endpoint: std::env::var("G8SCOPE_ENDPOINT").unwrap_or_else(|_| "http://localhost:8088".into()),
+        key: std::env::var("BLIPTRACE_KEY").unwrap_or_default(),
+        endpoint: std::env::var("BLIPTRACE_ENDPOINT").unwrap_or_else(|_| "http://localhost:8088".into()),
         environment: "demo".into(),
         release: "demo-rust@1.0".into(),
         ..Default::default()
