@@ -1,10 +1,10 @@
-# g8scope (Rust)
+# Bliptrace (Rust)
 
-Rust SDK for [g8scope](https://scope.g8suite.com) — build the language-neutral error envelope and
+Rust SDK for [Bliptrace](https://bliptrace.com) — build the language-neutral error envelope and
 ship it to the ingest API. **`std`-only** (raw `TcpStream`, http endpoints), zero dependencies.
 
 ```rust
-use g8scope::{capture, Config};
+use bliptrace::{capture, Config};
 
 let cfg = Config { key: std::env::var("BLIPTRACE_KEY").unwrap_or_default(),
     endpoint: "http://localhost:8088".into(), environment: "production".into(),

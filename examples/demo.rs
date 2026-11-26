@@ -1,4 +1,4 @@
-use g8scope::{capture, Config};
+use bliptrace::{capture, Config};
 
 fn main() {
     let cfg = Config {

@@ -1,4 +1,4 @@
-//! g8scope Rust SDK — build the language-neutral error envelope and POST it to the
+//! Bliptrace Rust SDK — build the language-neutral error envelope and POST it to the
 //! ingest API. `std`-only (raw `TcpStream`, http endpoints). The project is
 //! resolved server-side from the ingest key; never sent in the body.
 
@@ -48,7 +48,7 @@ pub fn build_envelope(cfg: &Config, error_type: &str, message: &str, level: &str
     format!(
         "{{\"schema_version\":\"1.0\",\"event_id\":{},\"occurred_at\":{},\
          \"runtime\":{{\"name\":\"rust\",\"version\":\"{}\"}},\
-         \"sdk\":{{\"name\":\"g8scope-rust\",\"version\":\"1.0.0\"}},\
+         \"sdk\":{{\"name\":\"bliptrace-rust\",\"version\":\"1.0.0\"}},\
          \"environment\":{},\"release\":{},\"level\":{},\
          \"exception\":{{\"type\":{},\"message\":{},\"frames\":[]}},\
          \"context\":{{\"custom\":{{}}}}}}",
