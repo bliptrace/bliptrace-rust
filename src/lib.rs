@@ -23,7 +23,7 @@ impl Default for Config {
         Config {
             enabled: true,
             key: String::new(),
-            endpoint: "https://ingest.scope.g8suite.com".into(),
+            endpoint: "https://ingest.bliptrace.com".into(),
             environment: "production".into(),
             release: String::new(),
         }
@@ -154,4 +154,40 @@ fn civil_from_days(z: i64) -> (i64, u32, u32) {
     let d = (doy - (153 * mp + 2) / 5 + 1) as u32;
     let m = if mp < 10 { mp + 3 } else { mp - 9 } as u32;
     (if m <= 2 { y + 1 } else { y }, m, d)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn envelope_has_contract_fields_and_no_project() {
+        let cfg = Config { release: "app@1".into(), ..Config::default() };
+        let e = build_envelope(&cfg, "Panic", "boom \"x\"\n", "error");
+        for f in ["\"schema_version\":\"1.0\"", "\"name\":\"bliptrace-rust\"", "\"release\":\"app@1\"",
+                  "\"level\":\"error\"", "\"type\":\"Panic\"", "\"message\":\"boom \\\"x\\\"\\n\""] {
+            assert!(e.contains(f), "missing {f} in {e}");
+        }
+        assert!(!e.contains("\"project\""));
+        assert!(build_envelope(&Config::default(), "E", "m", "error").contains("\"release\":null"));
+    }
+
+    #[test]
+    fn uuid_is_v4_and_unique() {
+        let (a, b) = (uuid4(), uuid4());
+        assert_ne!(a, b);
+        assert_eq!(a.len(), 36);
+        assert_eq!(&a[14..15], "4");
+    }
+
+    #[test]
+    fn civil_from_days_known_dates() {
+        assert_eq!(civil_from_days(0), (1970, 1, 1));
+        assert_eq!(civil_from_days(20454), (2026, 1, 1));
+    }
+
+    #[test]
+    fn capture_without_key_is_a_noop() {
+        capture(&Config::default(), "E", "m", "error"); // must not panic or connect
+    }
 }
